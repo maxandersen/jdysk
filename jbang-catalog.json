@@ -1,7 +1,7 @@
 {
   "catalogs": {},
   "aliases": {
-    "jdysk": {
+    "dysk": {
       "script-ref": "Dysk.java",
       "java-agents": []
     }
