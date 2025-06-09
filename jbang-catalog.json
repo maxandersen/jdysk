@@ -1,0 +1,10 @@
+{
+  "catalogs": {},
+  "aliases": {
+    "jdysk": {
+      "script-ref": "Dysk.java",
+      "java-agents": []
+    }
+  },
+  "templates": {}
+}
