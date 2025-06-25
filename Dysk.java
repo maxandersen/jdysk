@@ -5,6 +5,7 @@
 
 // NOTE: OSHI dependencies are resolved at runtime by JBang. If you see import errors in your IDE, run the script with JBang to resolve them.
 
+import java.util.Arrays;
 import java.util.List;
 
 import oshi.SystemInfo;
@@ -16,6 +17,9 @@ public class Dysk {
         List<OSFileStore> stores = si.getOperatingSystem().getFileSystem().getFileStores();
         System.out.printf("%-20s %-8s %-12s %-12s %-18s %-12s %-20s\n", "Filesystem", "Type", "Total", "Used", "Use", "Free", "Mount Point");
         for (OSFileStore store : stores) {
+            if (filterVolume(store.getVolume())) {
+                continue;
+            }
             String name = capName(store.getVolume(), 20);
             String type = store.getType();
             long total = store.getTotalSpace();
@@ -66,5 +70,18 @@ public class Dysk {
             unit++;
         }
         return String.format("%.1f%s", value, units[unit]);
+    }
+
+    private final static String[] FILTERED_VOLUMES = {
+            // Annoying timemachine volumes on macos
+            "com.apple.TimeMachine."
+    };
+    /**
+     * Return true for known annoying volume names
+     * @param name - OSFileStore#getVolume
+     * @return true if the volume name starts with a known filtered volume type
+     */
+    private static boolean filterVolume(String name) {
+        return Arrays.stream(FILTERED_VOLUMES).anyMatch(name::startsWith);
     }
 } 
